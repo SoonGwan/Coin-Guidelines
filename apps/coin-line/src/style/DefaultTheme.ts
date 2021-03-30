@@ -1,8 +1,4 @@
-// export interface IDefaultTheme {
-//   basicBg: string;
-//   basicFont: string;
-//   basicContextBox: string;
-// }
+import { DefaultTheme } from 'styled-components';
 
 export const darkTheme = {
   basicBg: '#0d1117',
