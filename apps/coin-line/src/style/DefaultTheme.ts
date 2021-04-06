@@ -1,3 +1,5 @@
+import { DefaultTheme } from 'styled-components';
+
 export const darkTheme = {
   basicBg: '#0d1117',
   basicFont: '#fff',
