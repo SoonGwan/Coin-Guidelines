@@ -1,1 +1,1 @@
-export * from './lib/component-ui';
+export { CoinCard } from './lib/CoinCard';
