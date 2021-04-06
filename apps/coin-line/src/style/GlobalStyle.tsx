@@ -6,6 +6,7 @@ export const GloabalStyle = createGlobalStyle`
     padding: 0;
     box-sizing:border-box;
     background:${({ theme }: any) => theme.basicBg};
-    color: ${({ theme }) => theme.basicFont}
+    color: ${({ theme }) => theme.basicFont};
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "segoe ui", Roboto, Helvetica, Arial, sans-serif;
   }
 `;
