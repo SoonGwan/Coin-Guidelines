@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { VscTriangleDown, VscTriangleUp } from 'react-icons/vsc';
+import { maxWidthDefine } from '@coin-line/utils';
 interface IStyledProps {
 	difference: string;
 }
@@ -28,8 +29,7 @@ const CoinCard = () => {
 export default CoinCard;
 
 const CoinCardWrapper = styled.div`
-	width: 100%;
-	max-width: 1370px;
+	${maxWidthDefine(1370)}
 	height: 80px;
 	border-top: 1px solid ${({ theme }) => theme.basicBorderColor};
 	display: flex;
@@ -38,13 +38,11 @@ const CoinCardWrapper = styled.div`
 `;
 
 const Rank = styled.div`
-	width: 100%;
-	max-width: 26px;
+	${maxWidthDefine(26)}
 `;
 
 const CoinName = styled.div`
-	width: 100%;
-	max-width: 221px;
+	${maxWidthDefine(221)}
 	display: flex;
 `;
 
@@ -54,19 +52,13 @@ const CoinAlias = styled.div`
 `;
 
 const Price = styled.div`
-	width: 100%;
-	max-width: 92px;
+	${maxWidthDefine(92)}
 `;
 
 const AmountDifference = styled.div`
+	${maxWidthDefine(74)}
 	display: flex;
 	color: ${(props: IStyledProps) =>
 		props.difference === 'up' ? 'green' : 'red'};
 	align-items: center;
-	width: 100%;
-	max-width: 74px;
-	/* &&::before {
-		content: '${(props: IStyledProps) =>
-		props.difference === 'up' ? '올라감' : '내려감'}';
-	} */
 `;
