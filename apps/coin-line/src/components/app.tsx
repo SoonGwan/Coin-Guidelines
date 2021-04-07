@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { Theme } from '../atom/Theme.atom';
 import { GloabalStyle } from '../style/GlobalStyle';
 import { CoinCard } from '@coin-line/component-ui';
+import * as PAGES from '../pages';
 
 export const App = () => {
 	const isDark = useRecoilValue(Theme);
@@ -13,6 +14,7 @@ export const App = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<GloabalStyle />
+			<PAGES.MainPage />
 		</ThemeProvider>
 	);
 };
