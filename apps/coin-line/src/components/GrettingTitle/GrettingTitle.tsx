@@ -15,7 +15,7 @@ type Props = {
 
 const GrettingTitle = ({ title, sub, paddingV }: Props) => {
 	return (
-		<GrettingTitleWrapper paddingV={paddingV}>{title}</GrettingTitleWrapper>
+		<GrettingTitleWrapper qapaddingV={paddingV}>{title}</GrettingTitleWrapper>
 	);
 };
 
