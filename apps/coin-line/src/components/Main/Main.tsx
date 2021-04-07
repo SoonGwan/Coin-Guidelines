@@ -6,7 +6,7 @@ const Main = () => {
 	return (
 		<MainWrapper>
 			<GrettingTitle
-				paddingV={24}
+				apaddingV={24}
 				title="Todays Cryptocurrency Prices by Market Cap"
 			/>
 		</MainWrapper>
