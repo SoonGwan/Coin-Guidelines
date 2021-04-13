@@ -1,1 +1,2 @@
-export { CoinCard } from './lib/CoinCard';
+export { CoinCard, CoinCardWrapper } from "./lib/CoinCard";
+export { MoreSelectCard } from "./lib/MoreSelectCard";
