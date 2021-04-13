@@ -4,9 +4,13 @@ import { CoinCardWrapper } from "@coin-line/component-ui";
 import { FaPlus } from "react-icons/fa";
 import { darken, lighten } from "polished";
 
-const MoreSelectCard = () => {
+type Props = {
+	onPress: () => void;
+};
+
+const MoreSelectCard = ({ onPress }: Props) => {
 	return (
-		<MoreSelectCardWrapper>
+		<MoreSelectCardWrapper onClick={onPress}>
 			<FaPlus />
 		</MoreSelectCardWrapper>
 	);
