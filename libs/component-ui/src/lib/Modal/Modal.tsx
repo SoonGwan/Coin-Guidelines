@@ -1,4 +1,10 @@
-import React, { SetStateAction, Dispatch, memo, useMemo } from "react";
+import React, {
+	SetStateAction,
+	Dispatch,
+	memo,
+	useMemo,
+	ReactNode,
+} from "react";
 import styled from "styled-components";
 import { ModalSize } from "./ModalSize";
 import { Box, Button, Dialog, Text } from "@primer/components";
@@ -13,6 +19,7 @@ type Props = {
 	content?: string;
 	dialogHeaderColor?: string;
 	buttonSize?: string;
+	children?: ReactNode;
 };
 
 const Modal = ({
@@ -21,6 +28,7 @@ const Modal = ({
 	header,
 	content,
 	dialogHeaderColor,
+	children,
 }: Props) => {
 	return (
 		<Dialog
@@ -38,9 +46,7 @@ const Modal = ({
 					{header}
 				</Text>
 			</Dialog.Header>
-			<Box p={3}>
-				<Box>{content}</Box>
-			</Box>
+			<Box p={3}>{children}</Box>
 		</Dialog>
 	);
 };

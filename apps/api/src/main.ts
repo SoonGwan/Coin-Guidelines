@@ -7,7 +7,9 @@ const app = express();
 
 const greeting: Message = { message: "Welcome to api!" };
 database.getConnection();
+
 app.use(cors());
+
 
 app.get("/api", (req, res) => {
 	res.send(greeting);

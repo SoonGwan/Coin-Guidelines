@@ -10,8 +10,18 @@ const MainContainer = () => {
 	useEffect(() => {
 		dispatch(fetchCoins());
 	}, [dispatch]);
-	console.log("obj", coins, loading, hasError);
-	return <Main />;
+
+	const coinsList = coins.map((data) => {
+		const { id, name, symbol, rank, is_active } = data;
+		return (
+			<div>
+				{name} , {symbol}
+			</div>
+		);
+	});
+
+	console.log("obj", coins);
+	return <Main coinsList={coinsList} />;
 };
 
 export default MainContainer;
