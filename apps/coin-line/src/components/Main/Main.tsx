@@ -3,7 +3,10 @@ import React from "react";
 import styled from "styled-components";
 import GrettingTitle from "../GrettingTitle";
 
-const Main = () => {
+type Props = {
+	coinsList: any;
+};
+const Main = ({ coinsList }: Props) => {
 	const [test, setTest] = React.useState(false);
 	return (
 		<MainWrapper>
@@ -12,7 +15,9 @@ const Main = () => {
 				title="Todays Cryptocurrency Prices by Market Cap"
 			/>
 			<MoreSelectCard onPress={() => setTest(!test)} />
-			<Modal isOpen={test} handleDialog={() => setTest(!test)} />
+			<Modal isOpen={test} handleDialog={() => setTest(!test)}>
+				<div>hi?</div>
+			</Modal>
 		</MainWrapper>
 	);
 };
