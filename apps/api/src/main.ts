@@ -1,4 +1,5 @@
 import * as express from "express";
+import * as cors from "cors";
 import { Message } from "@coin-line/api-interfaces";
 import * as database from "./database";
 import api from "./api";
@@ -6,6 +7,7 @@ const app = express();
 
 const greeting: Message = { message: "Welcome to api!" };
 database.getConnection();
+app.use(cors());
 
 app.get("/api", (req, res) => {
 	res.send(greeting);
