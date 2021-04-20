@@ -2,26 +2,37 @@ import React from "react";
 import styled from "styled-components";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
 import { maxWidthDefine } from "@coin-line/utils";
+import { addDollar, shortHitProfit, shortHitLoss } from "@coin-line/utils";
 interface IStyledProps {
 	difference: string;
 }
 
-const CoinCard = () => {
+type Props = {
+	name: string;
+	symbol: string;
+	id: number;
+	index: number;
+	buyCryptoValue: string;
+};
+
+const CoinCard = ({ name, symbol, id, index, buyCryptoValue }: Props) => {
 	const difference = "up";
 	return (
 		<CoinCardWrapper>
-			<Rank>1</Rank>
+			<Rank>{index}</Rank>
 			<CoinName>
-				BitCoin
-				<CoinAlias>BTC</CoinAlias>
+				{name}
+				<CoinAlias>{symbol}</CoinAlias>
 			</CoinName>
 			<Price>$58,084.43</Price>
-			<Price>$58,384.43</Price>
+			<Price>{shortHitProfit(buyCryptoValue, 15)}</Price>
+			<Price>{addDollar(buyCryptoValue)}</Price>
+			<Price>{shortHitLoss(buyCryptoValue, 5)}</Price>
+
 			<AmountDifference difference={difference}>
 				{difference === "up" ? <VscTriangleUp /> : <VscTriangleDown />}
 				1.23%
 			</AmountDifference>
-			<Price>$57,084.43</Price>
 		</CoinCardWrapper>
 	);
 };
