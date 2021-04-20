@@ -1,12 +1,27 @@
-import { MoreSelectCard, Modal } from "@coin-line/component-ui";
-import React from "react";
+import { MoreSelectCard, Modal, KeySelect } from "@coin-line/component-ui";
+import React, { Dispatch, SetStateAction, memo } from "react";
 import styled from "styled-components";
 import GrettingTitle from "../GrettingTitle";
 
 type Props = {
-	coinsList: any;
+	coinTemp: any;
+	crypto: null;
+	setCrypto: Dispatch<SetStateAction<null>>;
+	handleSelectCrypto: () => void;
+	isPress: boolean;
+	setIsPress: Dispatch<SetStateAction<boolean>>;
+	handlePressModal: () => void;
 };
-const Main = ({ coinsList }: Props) => {
+
+const Main = ({
+	coinTemp,
+	crypto,
+	setCrypto,
+	handleSelectCrypto,
+	isPress,
+	setIsPress,
+	handlePressModal,
+}: Props) => {
 	const [test, setTest] = React.useState(false);
 	return (
 		<MainWrapper>
@@ -14,14 +29,15 @@ const Main = ({ coinsList }: Props) => {
 				paddingV={24}
 				title="Todays Cryptocurrency Prices by Market Cap"
 			/>
-			<MoreSelectCard onPress={() => setTest(!test)} />
-			<Modal isOpen={test} handleDialog={() => setTest(!test)}>
-				<div>hi?</div>
+			<MoreSelectCard onPress={handlePressModal} />
+			<Modal isOpen={isPress} handleDialog={handlePressModal}>
+				<KeySelect options={coinTemp} crypto={crypto} setCrypto={setCrypto} />
+				<button onClick={handleSelectCrypto}>선택하기</button>
 			</Modal>
 		</MainWrapper>
 	);
 };
 
-export default Main;
+export default memo(Main);
 
 const MainWrapper = styled.div``;

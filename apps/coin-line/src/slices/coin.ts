@@ -39,8 +39,10 @@ export const fetchCoins = () => {
 		dispatch(getCoins());
 
 		try {
-			const { data } = await axios.get(`${SERVER}/coin/coin`);
-			dispatch(getCoinsSuccess(data));
+			const {
+				data: { data: coinData },
+			} = await axios.get(`${SERVER}/coin/coin`);
+			dispatch(getCoinsSuccess(coinData));
 		} catch (error) {
 			dispatch(getCoinsFailure());
 		}

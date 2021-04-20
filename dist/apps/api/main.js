@@ -121,6 +121,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var typeorm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! typeorm */ "typeorm");
 /* harmony import */ var typeorm__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(typeorm__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _entitiy_currentCryptocurrency__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../entitiy/currentCryptocurrency */ "./apps/api/src/entitiy/currentCryptocurrency/index.ts");
+/* harmony import */ var _coin_line_api_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @coin-line/api-util */ "./libs/api-util/src/index.ts");
+
 
 
 
@@ -128,6 +130,7 @@ __webpack_require__.r(__webpack_exports__);
     try {
         const coinRepo = Object(typeorm__WEBPACK_IMPORTED_MODULE_1__["getRepository"])(_entitiy_currentCryptocurrency__WEBPACK_IMPORTED_MODULE_2__["CryptoCurrency"]);
         const coinData = yield coinRepo.find();
+        _coin_line_api_util__WEBPACK_IMPORTED_MODULE_3__["logger"].yellow("CoinAPI");
         res.status(200).json({
             status: 200,
             message: "CoinData",
@@ -357,18 +360,22 @@ const entitise = [_currentCryptocurrency__WEBPACK_IMPORTED_MODULE_0__["CryptoCur
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ "express");
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _database__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./database */ "./apps/api/src/database.ts");
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./api */ "./apps/api/src/api/index.ts");
+/* harmony import */ var cors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! cors */ "cors");
+/* harmony import */ var cors__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(cors__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _database__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./database */ "./apps/api/src/database.ts");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./api */ "./apps/api/src/api/index.ts");
+
 
 
 
 const app = express__WEBPACK_IMPORTED_MODULE_0__();
 const greeting = { message: "Welcome to api!" };
-_database__WEBPACK_IMPORTED_MODULE_1__["getConnection"]();
+_database__WEBPACK_IMPORTED_MODULE_2__["getConnection"]();
+app.use(cors__WEBPACK_IMPORTED_MODULE_1__());
 app.get("/api", (req, res) => {
     res.send(greeting);
 });
-app.use("/api", _api__WEBPACK_IMPORTED_MODULE_2__["default"]);
+app.use("/api", _api__WEBPACK_IMPORTED_MODULE_3__["default"]);
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
     console.log("Listening at http://localhost:" + port + "/api");
@@ -463,6 +470,17 @@ module.exports = __webpack_require__(/*! /Users/gwonsungwan/Documents/GitHub/Coi
 /***/ (function(module, exports) {
 
 module.exports = require("colors");
+
+/***/ }),
+
+/***/ "cors":
+/*!***********************!*\
+  !*** external "cors" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("cors");
 
 /***/ }),
 
