@@ -16,7 +16,6 @@ export default async (req: Request, res: Response) => {
 		);
 		logger.green(`Success -> CRYPTO_ID : ${CRYPTO_ID} `);
 		res.status(200).json({
-			status: 200,
 			message: "success",
 			data,
 		});

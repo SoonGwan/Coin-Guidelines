@@ -137,7 +137,6 @@ var _config_config_json__WEBPACK_IMPORTED_MODULE_2___namespace = /*#__PURE__*/__
         });
         _coin_line_api_util__WEBPACK_IMPORTED_MODULE_1__["logger"].green(`Success -> CRYPTO_ID : ${CRYPTO_ID} `);
         res.status(200).json({
-            status: 200,
             message: "success",
             data,
         });
