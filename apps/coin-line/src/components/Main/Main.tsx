@@ -20,6 +20,7 @@ type Props = {
 	handlePressModal: () => void;
 	buyCryptoValue: string;
 	onChangeRequest: (e: ChangeEvent<HTMLInputElement>) => void;
+	handleCryptoInfo: (id: number) => void;
 };
 
 const Main = ({
@@ -32,6 +33,7 @@ const Main = ({
 	handlePressModal,
 	buyCryptoValue,
 	onChangeRequest,
+	handleCryptoInfo,
 }: Props) => {
 	const cryptoValue = useRecoilValue(selectCrypto);
 
@@ -62,6 +64,7 @@ const Main = ({
 							id={id}
 							index={index + 1}
 							buyCryptoValue={buyCryptoValue}
+							handleCryptoInfo={handleCryptoInfo}
 						/>
 					);
 				})}

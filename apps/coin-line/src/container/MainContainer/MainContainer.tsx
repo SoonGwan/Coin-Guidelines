@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCoins, coinSelector } from "../../slices/coin";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { selectCrypto } from "../../atom/Crypto.atom";
+import { useHistory } from "react-router-dom";
 
 export type Options = {
 	name: string;
@@ -18,6 +19,7 @@ const MainContainer = () => {
 	const dispatch = useDispatch();
 	const { coins, loading, hasError } = useSelector(coinSelector);
 	const { coinData } = coins;
+	const history = useHistory();
 
 	const coinTemp = [] as Options[];
 
@@ -52,12 +54,20 @@ const MainContainer = () => {
 		setBuyCryptoValue(e.target.value);
 	}, []);
 
+	const handleCryptoInfo = useCallback(
+		(id: number) => {
+			history.push(`coinInfo/${id}`);
+		},
+		[history]
+	);
+
 	useEffect(() => {
 		dispatch(fetchCoins());
 	}, [dispatch]);
 
 	return (
 		<Main
+			handleCryptoInfo={handleCryptoInfo}
 			coinTemp={coinTemp}
 			crypto={crypto}
 			setCrypto={setCrypto}

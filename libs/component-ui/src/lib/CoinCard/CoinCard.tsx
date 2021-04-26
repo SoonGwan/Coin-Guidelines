@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
 import { maxWidthDefine } from "@coin-line/utils";
 import { addDollar, shortHitProfit, shortHitLoss } from "@coin-line/utils";
+import { withRouter } from "react-router-dom";
 interface IStyledProps {
 	difference: string;
 }
@@ -13,12 +14,20 @@ type Props = {
 	id: number;
 	index: number;
 	buyCryptoValue: string;
+	handleCryptoInfo: (id: number) => void;
 };
 
-const CoinCard = ({ name, symbol, id, index, buyCryptoValue }: Props) => {
+const CoinCard = ({
+	name,
+	symbol,
+	id,
+	index,
+	buyCryptoValue,
+	handleCryptoInfo,
+}: Props) => {
 	const difference = "up";
 	return (
-		<CoinCardWrapper>
+		<CoinCardWrapper onClick={() => handleCryptoInfo(id)}>
 			<Rank>{index}</Rank>
 			<CoinName>
 				{name}
