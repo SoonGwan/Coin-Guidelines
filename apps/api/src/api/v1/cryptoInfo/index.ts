@@ -1,8 +1,8 @@
 import { Router } from "express";
-import coin from "./cryptoMap";
 import coinInfo from "./cryptoInfo";
+
 const router = Router();
 
-router.use("/coin", coin, coinInfo);
-// router.use("/coin", coinInfo);
+router.get("/coinInfo", coinInfo);
+
 export default router;
