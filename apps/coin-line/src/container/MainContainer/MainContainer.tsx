@@ -1,84 +1,132 @@
 import React, { useCallback, useEffect, useState, ChangeEvent } from "react";
 import Main from "../../components/Main";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCoins, coinSelector } from "../../slices/coin";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { selectCrypto } from "../../atom/Crypto.atom";
+import { coinIdList, selectCrypto } from "../../atom/Crypto.atom";
 import { useHistory } from "react-router-dom";
+import { requestCoin, requestCoinIdList } from "../../slices/coin";
 
 export type Options = {
-	name: string;
-	value: number;
+  name: string;
+  value: number;
 };
 
 const MainContainer = () => {
-	const [crypto, setCrypto] = useState(null);
-	const [isPress, setIsPress] = useState(false);
-	const [buyCryptoValue, setBuyCryptoValue] = useState<string>();
-	const [, setSelectCrypto] = useRecoilState(selectCrypto);
-	const dispatch = useDispatch();
-	const { coins, loading, hasError } = useSelector(coinSelector);
-	const { coinData } = coins;
-	const history = useHistory();
+  const [crypto, setCrypto] = useState(null);
+  const [isPress, setIsPress] = useState(false);
+  const [buyCryptoValue, setBuyCryptoValue] = useState<string>();
+  const [, setSelectCrypto] = useRecoilState(selectCrypto);
+  const [coinData, setCoinData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  // const [coinIdList, setCoinIdList] = useState([]);
+  const [, setCoinIdList] = useRecoilState(coinIdList);
 
-	const coinTemp = [] as Options[];
+  const history = useHistory();
+  const coinListId = useRecoilValue(selectCrypto);
 
-	coinData &&
-		coinData.map((data) => {
-			const { name, symbol, id } = data;
-			const temp = { name: `${name} / (${symbol})`, value: id };
-			coinTemp.push(temp);
-		});
+  const coinTemp = [] as Options[];
+  const handleRequestCoin = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await requestCoin();
+      setCoinData(data.coinData);
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
 
-	const handlePressModal = useCallback(() => {
-		setIsPress(!isPress);
-	}, [isPress]);
+      return err;
+    }
+  }, []);
 
-	const handleSelectCrypto = useCallback(() => {
-		console.log(buyCryptoValue);
-		if (coinData !== undefined && crypto !== null) {
-			console.log(crypto);
-			const temp = {
-				...coinData.find((args) => args.id === crypto),
-				buyCryptoValue,
-			};
-			setSelectCrypto((prev) => [...prev, temp]);
+  coinData.map((data) => {
+    const { name, symbol, id } = data;
+    const temp = { name: `${name} / (${symbol})`, value: id };
+    coinTemp.push(temp);
+  });
 
-			handlePressModal();
-		}
-		// TODO: 여기에 들어갈 토스트 알림이 있어야 함
-	}, [buyCryptoValue, coinData, crypto, handlePressModal, setSelectCrypto]);
+  const handlePressModal = useCallback(() => {
+    setIsPress(!isPress);
+  }, [isPress]);
 
-	const onChangeRequest = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-		console.log(e.target.value);
-		setBuyCryptoValue(e.target.value);
-	}, []);
+  const handleSelectCrypto = useCallback(() => {
+    if (coinData !== undefined && crypto !== null) {
+      const temp = {
+        ...coinData.find((args) => args.id === crypto),
+        buyCryptoValue,
+      };
+      console.log(temp);
+      setSelectCrypto((prev) => [...prev, temp]);
 
-	const handleCryptoInfo = useCallback(
-		(id: number) => {
-			history.push(`coinInfo/${id}`);
-		},
-		[history]
-	);
+      handlePressModal();
+    }
+    // TODO: 여기에 들어갈 토스트 알림이 있어야 함
+  }, [buyCryptoValue, coinData, crypto, handlePressModal, setSelectCrypto]);
 
-	useEffect(() => {
-		dispatch(fetchCoins());
-	}, [dispatch]);
+  const onChangeRequest = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setBuyCryptoValue(e.target.value);
+  }, []);
 
-	return (
-		<Main
-			handleCryptoInfo={handleCryptoInfo}
-			coinTemp={coinTemp}
-			crypto={crypto}
-			setCrypto={setCrypto}
-			handleSelectCrypto={handleSelectCrypto}
-			isPress={isPress}
-			setIsPress={setIsPress}
-			handlePressModal={handlePressModal}
-			buyCryptoValue={buyCryptoValue}
-			onChangeRequest={onChangeRequest}
-		/>
-	);
+  const handleCryptoInfo = useCallback(
+    (id: number) => {
+      history.push(`coinInfo/${id}`);
+    },
+    [history]
+  );
+
+  const handleRequestCoinIdList = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      let cryptoIdList = [] as any;
+      for (const coins in coinListId) {
+        cryptoIdList = [...cryptoIdList, coinListId[coins].id];
+      }
+
+      const {
+        data: { data },
+      } = await requestCoinIdList(cryptoIdList);
+
+      for (const coins in data) {
+        setCoinIdList((prev) => [
+          ...prev,
+          { price: data[coins].quote.USD.price, id: data[coins].id },
+        ]);
+      }
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+
+      return err;
+    }
+  }, [coinListId, setCoinIdList]);
+
+  useEffect(() => {
+    console.log("isLoaded");
+    handleRequestCoin();
+    handleRequestCoinIdList();
+  }, [handleRequestCoin, handleRequestCoinIdList]);
+
+  return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {isLoading ? (
+        <div>loading</div>
+      ) : (
+        <Main
+          handleCryptoInfo={handleCryptoInfo}
+          coinTemp={coinTemp}
+          crypto={crypto}
+          setCrypto={setCrypto}
+          handleSelectCrypto={handleSelectCrypto}
+          isPress={isPress}
+          setIsPress={setIsPress}
+          handlePressModal={handlePressModal}
+          buyCryptoValue={buyCryptoValue}
+          onChangeRequest={onChangeRequest}
+          handleRequestCoinIdList={handleRequestCoinIdList}
+        />
+      )}
+    </>
+  );
 };
 
 export default MainContainer;

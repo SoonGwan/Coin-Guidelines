@@ -2,7 +2,7 @@ export const unitStrategyUS = (dollar: number) => {
 	return "$" + dollar.toLocaleString("en-US");
 };
 
-export const addDollar = (money: string) => {
+export const addDollar = (money: string | number) => {
 	const dollar = Number(money);
 	return unitStrategyUS(dollar);
 };
