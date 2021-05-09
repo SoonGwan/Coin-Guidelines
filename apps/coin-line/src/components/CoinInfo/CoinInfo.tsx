@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { addDollar } from "@coin-line/utils";
 import { Line } from "@ant-design/charts";
 
+import dtil from "dtil";
+import { percentCalculationResult } from "@coin-line/utils";
 // import ReactApexCharts from "react-apexcharts";
 
 interface RisingProps {
@@ -18,8 +20,64 @@ type Props = {
 const CoinInfo = ({ info, dayChartData }: Props) => {
   const { name, symbol, cmc_rank } = info;
   const USD_OBJ = info.quote !== undefined && info.quote.USD;
-
+  const now = new Date();
   const risingPercent = USD_OBJ && USD_OBJ.percent_change_24h.toFixed(3);
+
+  const dayChartData_TEMP = [
+    {
+      date: dtil(new Date(now.setMonth(now.getMonth() - 3)).toString()).format(
+        "YYYY-MM-DD"
+      ),
+      value: percentCalculationResult({
+        totalValue: dayChartData.price,
+        percentValue: dayChartData.percent_change_90d,
+      }),
+    },
+    {
+      date: dtil(new Date(now.setMonth(now.getMonth() - 2)).toString()).format(
+        "YYYY-MM-DD"
+      ),
+      value: percentCalculationResult({
+        totalValue: dayChartData.price,
+        percentValue: dayChartData.percent_change_60d,
+      }),
+    },
+    {
+      date: dtil(new Date(now.setMonth(now.getMonth() - 1)).toString()).format(
+        "YYYY-MM-DD"
+      ),
+      value: percentCalculationResult({
+        totalValue: dayChartData.price,
+        percentValue: dayChartData.percent_change_30d,
+      }),
+    },
+    {
+      date: dtil(new Date(now.setDate(now.getDate() - 7)).toString()).format(
+        "YYYY-MM-DD"
+      ),
+      value: percentCalculationResult({
+        totalValue: dayChartData.price,
+        percentValue: dayChartData.percent_change_7d,
+      }),
+    },
+    {
+      date: dtil(new Date(now.setDate(now.getDate() - 1)).toString()).format(
+        "YYYY-MM-DD"
+      ),
+      value: percentCalculationResult({
+        totalValue: dayChartData.price,
+        percentValue: dayChartData.percent_change_24h,
+      }),
+    },
+    {
+      date: "한시간 전",
+      value: percentCalculationResult({
+        totalValue: dayChartData.price,
+        percentValue: dayChartData.percent_change_1h,
+      }),
+    },
+  ];
+  console.log(dayChartData_TEMP);
 
   const PERCENT_CRYPTO_TITLE =
     risingPercent < 0 ? (
@@ -47,24 +105,13 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
       </CryptoStateBlockRising>
     );
 
-  const data = [
-    { year: "1991", value: 3 },
-    { year: "1992", value: 4 },
-    { year: "1993", value: 3.5 },
-    { year: "1994", value: 5 },
-    { year: "1995", value: 4.9 },
-    { year: "1996", value: 6 },
-    { year: "1997", value: 7 },
-    { year: "1998", value: 9 },
-    { year: "1999", value: 13 },
-  ];
-
   const config = {
-    data,
+    data: dayChartData_TEMP,
     width: 800,
     height: 400,
     autoFit: false,
-    xField: "year",
+    padding: "auto",
+    xField: "date",
     yField: "value",
     point: {
       size: 5,
@@ -132,8 +179,6 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
         </CryptoPriceWrapper>
       </CryptoTopWrapper>
       <Line {...config} />
-
-      {/* <ReactApexCharts></ReactApexCharts> */}
     </CoinInfoWrapper>
   );
 };
