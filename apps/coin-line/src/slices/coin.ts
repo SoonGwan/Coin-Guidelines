@@ -1,19 +1,19 @@
-import axios from "axios";
-import { SERVER } from "../config/config.json";
+import { getRequest } from "@coin-line/utils";
 
 export const requestCoin = async () => {
-	const {
-		data: { data: coinData },
-	} = await axios.get(`${SERVER}/coin/coin`);
+  const url = "/coin/coin";
+  const {
+    data: { data: coinData },
+  } = await getRequest({ url });
 
-	return coinData;
+  return coinData;
 };
 
 export const requestCoinIdList = async (idList: number[]) => {
-	const cryptoIdList = idList.join(",");
-	const { data } = await axios.get(
-		`${SERVER}/coin/coinIdList?id=${cryptoIdList}`
-	);
+  const cryptoIdList = idList.join(",");
+  const url = `/coin/coinIdList?id=${cryptoIdList}`;
 
-	return data;
+  const { data } = await getRequest({ url });
+
+  return data;
 };
