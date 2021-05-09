@@ -2,29 +2,31 @@ import React, { useCallback, useEffect, useState } from "react";
 import CoinInfo from "../../components/CoinInfo";
 import { useParams } from "react-router-dom";
 import { requestCoinInfo } from "../../slices/coinInfo";
-// import data from "./mock.json";
 
 const CoinInfoContainer = () => {
-	const { id } = useParams();
+  const { id } = useParams();
 
-	const [infoData, setInfoData] = useState([]);
-	// const [isLoading, setIsLoading] = useState(false);
+  const [infoData, setInfoData] = useState([]);
+  const [dayChartData, setDayChartData] = useState({});
 
-	const handleRequestCoinInfo = useCallback(async () => {
-		try {
-			const { data } = await requestCoinInfo(id);
-			console.log("data", data);
-			setInfoData(data && data[id]);
-		} catch (err) {
-			return err;
-		}
-	}, [id]);
+  const handleRequestCoinInfo = useCallback(async () => {
+    try {
+      const { data } = await requestCoinInfo(id);
+      console.log("data", data);
+      setInfoData(data && data[id]);
 
-	useEffect(() => {
-		handleRequestCoinInfo();
-	}, [handleRequestCoinInfo]);
+      setDayChartData(data && data[id].quote.USD);
+    } catch (err) {
+      return err;
+    }
+  }, [id]);
+  console.log(dayChartData);
 
-	return <CoinInfo info={infoData} />;
+  useEffect(() => {
+    handleRequestCoinInfo();
+  }, [handleRequestCoinInfo]);
+
+  return <CoinInfo info={infoData} dayChartData={dayChartData} />;
 };
 
 export default CoinInfoContainer;
