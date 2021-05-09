@@ -1,1 +1,1 @@
-export * from './lib/api-interfaces';
+export { quoteUSDType, coinData } from "./lib/coin-types";
