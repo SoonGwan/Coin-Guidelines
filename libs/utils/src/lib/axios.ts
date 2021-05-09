@@ -1,10 +1,17 @@
-import axios from 'axios';
-import { SERVER_COIN_MACAP } from '../config/SERVER.json';
-import { TOKEN_COIN_MACAP } from '../config/TOKEN.json';
+import axios, { AxiosResponse } from "axios";
+import { SERVER } from "../config/SERVER.json";
+import { IGetRequest } from "@coin-line/api-interfaces";
 
-export const COIN_MACAP_AXIOS = axios.create({
-  baseURL: `${SERVER_COIN_MACAP}`,
+const COIN_MACAP_AXIOS = axios.create({
+  baseURL: `${SERVER}`,
   headers: {
-    'X-CMC_PRO_API_KEY': `${TOKEN_COIN_MACAP}`,
+    "Access-Control-Allow-Origin": "*",
   },
 });
+
+export const getRequest = async ({
+  url,
+}: IGetRequest): Promise<AxiosResponse> => {
+  const data: AxiosResponse = await COIN_MACAP_AXIOS.get(url);
+  return data;
+};
