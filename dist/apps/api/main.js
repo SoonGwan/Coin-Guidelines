@@ -150,6 +150,45 @@ var _config_config_json__WEBPACK_IMPORTED_MODULE_2___namespace = /*#__PURE__*/__
 
 /***/ }),
 
+/***/ "./apps/api/src/api/v1/cryptoInfo/cryptoInfoArr.ts":
+/*!*********************************************************!*\
+  !*** ./apps/api/src/api/v1/cryptoInfo/cryptoInfoArr.ts ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "tslib");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _config_config_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../config/config.json */ "./apps/api/src/config/config.json");
+var _config_config_json__WEBPACK_IMPORTED_MODULE_1___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../../../config/config.json */ "./apps/api/src/config/config.json", 1);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "axios");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ((req, res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(void 0, void 0, void 0, function* () {
+    const CRYPTO_LIST = req.query.id;
+    try {
+        const { data } = yield axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(`${_config_config_json__WEBPACK_IMPORTED_MODULE_1__["COINMACAP"]}/cryptocurrency/quotes/latest?id=${CRYPTO_LIST}`, {
+            headers: {
+                "X-CMC_PRO_API_KEY": `${_config_config_json__WEBPACK_IMPORTED_MODULE_1__["XCMCPROAPIKEY"]}`,
+            },
+        });
+        res.status(200).json({
+            message: "success",
+            data,
+        });
+    }
+    catch (err) {
+        return err;
+    }
+}));
+
+
+/***/ }),
+
 /***/ "./apps/api/src/api/v1/cryptoInfo/index.ts":
 /*!*************************************************!*\
   !*** ./apps/api/src/api/v1/cryptoInfo/index.ts ***!
@@ -162,10 +201,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ "express");
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _cryptoInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cryptoInfo */ "./apps/api/src/api/v1/cryptoInfo/cryptoInfo.ts");
+/* harmony import */ var _cryptoInfoArr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./cryptoInfoArr */ "./apps/api/src/api/v1/cryptoInfo/cryptoInfoArr.ts");
+
 
 
 const router = Object(express__WEBPACK_IMPORTED_MODULE_0__["Router"])();
 router.get("/coinInfo", _cryptoInfo__WEBPACK_IMPORTED_MODULE_1__["default"]);
+router.get("/coinIdList", _cryptoInfoArr__WEBPACK_IMPORTED_MODULE_2__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (router);
 
 
@@ -261,7 +303,7 @@ router.use("/coin", _cryptoMap__WEBPACK_IMPORTED_MODULE_1__["default"], _cryptoI
 /*! exports provided: SERVER, COINMACAP, XCMCPROAPIKEY, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"SERVER\":\"http://localhost:3333/api/v1\",\"COINMACAP\":\"https://pro-api.coinmarketcap.com/v1\",\"XCMCPROAPIKEY\":\"3a16711e-21a0-424a-a4c6-5f3d8e96cdd2\"}");
+module.exports = JSON.parse("{\"SERVER\":\"http://localhost:3333/api/v1\",\"COINMACAP\":\"https://pro-api.coinmarketcap.com/v1\",\"XCMCPROAPIKEY\":\"097f89bf-8beb-4bd2-a190-b401133ad2e4\"}");
 
 /***/ }),
 

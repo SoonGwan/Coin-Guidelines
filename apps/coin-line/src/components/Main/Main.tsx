@@ -1,88 +1,141 @@
 import {
-	MoreSelectCard,
-	Modal,
-	KeySelect,
-	CoinCard,
+  MoreSelectCard,
+  Modal,
+  KeySelect,
+  CoinCard,
 } from "@coin-line/component-ui";
-import React, { Dispatch, SetStateAction, memo, ChangeEvent } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  memo,
+  ChangeEvent,
+  useEffect,
+} from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { selectCrypto } from "../../atom/Crypto.atom";
+import { coinIdList, selectCrypto } from "../../atom/Crypto.atom";
 import GrettingTitle from "../GrettingTitle";
 
 type Props = {
-	coinTemp: any;
-	crypto: null;
-	setCrypto: Dispatch<SetStateAction<null>>;
-	handleSelectCrypto: () => void;
-	isPress: boolean;
-	setIsPress: Dispatch<SetStateAction<boolean>>;
-	handlePressModal: () => void;
-	buyCryptoValue: string;
-	onChangeRequest: (e: ChangeEvent<HTMLInputElement>) => void;
-	handleCryptoInfo: (id: number) => void;
+  coinTemp: any;
+  crypto: null;
+  setCrypto: Dispatch<SetStateAction<null>>;
+  handleSelectCrypto: () => void;
+  isPress: boolean;
+  setIsPress: Dispatch<SetStateAction<boolean>>;
+  handlePressModal: () => void;
+  buyCryptoValue: string;
+  onChangeRequest: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleCryptoInfo: (id: number) => void;
+  handleRequestCoinIdList: any;
 };
 
 const Main = ({
-	coinTemp,
-	crypto,
-	setCrypto,
-	handleSelectCrypto,
-	isPress,
-	setIsPress,
-	handlePressModal,
-	buyCryptoValue,
-	onChangeRequest,
-	handleCryptoInfo,
+  coinTemp,
+  crypto,
+  setCrypto,
+  handleSelectCrypto,
+  isPress,
+  setIsPress,
+  handlePressModal,
+  buyCryptoValue,
+  onChangeRequest,
+  handleCryptoInfo,
+  handleRequestCoinIdList,
 }: Props) => {
-	const cryptoValue = useRecoilValue(selectCrypto);
+  const cryptoValue = useRecoilValue(selectCrypto);
+  const coinIdListRecoilValue = useRecoilValue(coinIdList);
+  const coinIdListValue = coinIdListRecoilValue;
+  // cryptoValue.length === coinIdListRecoilValue.length &&
 
-	return (
-		<MainWrapper>
-			<GrettingTitle
-				paddingV={24}
-				title="Todays Cryptocurrency Prices by Market Cap"
-			/>
-			{cryptoValue &&
-				cryptoValue.map((data, index) => {
-					const {
-						first_historical_data,
-						id,
-						is_acive,
-						last_historical_data,
-						name,
-						rank,
-						slug,
-						symbol,
-						buyCryptoValue,
-					} = data;
-					return (
-						<CoinCard
-							key={index}
-							name={name}
-							symbol={symbol}
-							id={id}
-							index={index + 1}
-							buyCryptoValue={buyCryptoValue}
-							handleCryptoInfo={handleCryptoInfo}
-						/>
-					);
-				})}
+  return (
+    <MainWrapper>
+      <GrettingTitle
+        paddingV={24}
+        title="Todays Cryptocurrency Prices by Market Cap"
+      />
+      <CryptoTableHeader>
+        <CryptoId>#</CryptoId>
+        <CryptoName>코인 이름</CryptoName>
+        <CryptoItem>현재 금액</CryptoItem>
+        <CryptoItem>익절 금액</CryptoItem>
+        <CryptoItem>구매 금액</CryptoItem>
+        <CryptoItem>손절 금액</CryptoItem>
+      </CryptoTableHeader>
+      {cryptoValue &&
+        cryptoValue.map((data, index) => {
+          const {
+            first_historical_data,
+            id,
+            is_acive,
+            last_historical_data,
+            name,
+            rank,
+            slug,
+            symbol,
+            buyCryptoValue,
+          } = data;
 
-			<MoreSelectCard onPress={handlePressModal} />
-			<Modal isOpen={isPress} handleDialog={handlePressModal}>
-				<KeySelect options={coinTemp} crypto={crypto} setCrypto={setCrypto} />
-				<input
-					type="text"
-					value={buyCryptoValue}
-					onChange={(e) => onChangeRequest(e)}
-				/>
-				<button onClick={handleSelectCrypto}>선택하기</button>
-			</Modal>
-		</MainWrapper>
-	);
+          const cryptoPrice =
+            coinIdListValue[index] !== undefined &&
+            coinIdListValue[index] !== null &&
+            coinIdListValue.find((args: { id: number }) => args.id === data.id)
+              .price !== false &&
+            coinIdListValue.find((args: { id: number }) => args.id === data.id)
+              .price;
+          console.log("cryptoPrice", cryptoPrice);
+          console.log("PriceListValue", coinIdListValue);
+          return (
+            <CoinCard
+              key={index}
+              name={name}
+              symbol={symbol}
+              id={id}
+              index={index + 1}
+              buyCryptoValue={buyCryptoValue}
+              handleCryptoInfo={handleCryptoInfo}
+              cryptoPrice={cryptoPrice}
+            />
+          );
+        })}
+
+      <MoreSelectCard onPress={handlePressModal} />
+      <Modal isOpen={isPress} handleDialog={handlePressModal}>
+        <KeySelect options={coinTemp} crypto={crypto} setCrypto={setCrypto} />
+        <input
+          type="text"
+          value={buyCryptoValue}
+          onChange={(e) => onChangeRequest(e)}
+        />
+        <button onClick={handleSelectCrypto}>선택하기</button>
+      </Modal>
+    </MainWrapper>
+  );
 };
 
 export default Main;
 
 const MainWrapper = styled.div``;
+
+const CryptoTableHeader = styled.div`
+  width: 100%;
+  height: 40px;
+  display: flex;
+  font-size: 12px;
+  font-weight: bold;
+`;
+
+const CryptoId = styled.div`
+  width: 100%;
+  max-width: 26px;
+`;
+
+const CryptoName = styled.div`
+  width: 100%;
+  max-width: 221px;
+`;
+
+const CryptoItem = styled.div`
+  width: 100%;
+  max-width: 92px;
+`;

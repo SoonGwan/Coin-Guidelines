@@ -3,6 +3,7 @@ import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
 import styled from "styled-components";
 import { addDollar } from "@coin-line/utils";
 import { Line } from "@ant-design/charts";
+
 import dtil from "dtil";
 import { percentCalculationResult } from "@coin-line/utils";
 // import ReactApexCharts from "react-apexcharts";

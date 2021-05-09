@@ -1,50 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER } from "../config/config.json";
 
-export const initialState = {
-	loading: false,
-	hasError: false,
-	coins: [],
+export const requestCoin = async () => {
+	const {
+		data: { data: coinData },
+	} = await axios.get(`${SERVER}/coin/coin`);
+
+	return coinData;
 };
 
-const coinSlice = createSlice({
-	name: "coins",
-	initialState,
-	reducers: {
-		getCoins: (state) => {
-			state.loading = true;
-		},
-		getCoinsSuccess: (state, { payload }) => {
-			state.coins = payload;
-			state.loading = true;
-			state.hasError = false;
-		},
-		getCoinsFailure: (state) => {
-			state.loading = false;
-			state.hasError = true;
-		},
-	},
-});
+export const requestCoinIdList = async (idList: number[]) => {
+	const cryptoIdList = idList.join(",");
+	const { data } = await axios.get(
+		`${SERVER}/coin/coinIdList?id=${cryptoIdList}`
+	);
 
-// 우리가 만든 createSlice 에 대한 3가지 actions을 가짐
-export const { getCoins, getCoinsSuccess, getCoinsFailure } = coinSlice.actions;
-
-export const coinSelector = (state) => state.coins;
-
-export default coinSlice.reducer;
-
-export const fetchCoins = () => {
-	return async (dispatch) => {
-		dispatch(getCoins());
-
-		try {
-			const {
-				data: { data: coinData },
-			} = await axios.get(`${SERVER}/coin/coin`);
-			dispatch(getCoinsSuccess(coinData));
-		} catch (error) {
-			dispatch(getCoinsFailure());
-		}
-	};
+	return data;
 };
