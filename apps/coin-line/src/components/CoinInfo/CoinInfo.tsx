@@ -1,69 +1,74 @@
-import React, { memo, useMemo } from "react";
+import React, { memo } from "react";
+import dtil from "dtil";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
 import styled from "styled-components";
 import { addDollar } from "@coin-line/utils";
 import { Line } from "@ant-design/charts";
-
-import dtil from "dtil";
 import { percentCalculationResult } from "@coin-line/utils";
-// import ReactApexCharts from "react-apexcharts";
+import { quoteUSDType, coinData } from "@coin-line/api-interfaces";
 
 interface RisingProps {
   isRising: boolean;
 }
 
 type Props = {
-  info: any;
-  dayChartData: any;
+  info: coinData;
+  dayChartData: quoteUSDType;
 };
 
 const CoinInfo = ({ info, dayChartData }: Props) => {
+  console.log(info);
   const { name, symbol, cmc_rank } = info;
   const USD_OBJ = info.quote !== undefined && info.quote.USD;
-  const now = new Date();
+  const change_90d = new Date();
+  const change_60d = new Date();
+  const change_30d = new Date();
+  const change_7d = new Date();
+  const change_24h = new Date();
+
   const risingPercent = USD_OBJ && USD_OBJ.percent_change_24h.toFixed(3);
 
   const dayChartData_TEMP = [
     {
-      date: dtil(new Date(now.setMonth(now.getMonth() - 3)).toString()).format(
-        "YYYY-MM-DD"
-      ),
+      date: dtil(
+        new Date(change_90d.setMonth(change_90d.getMonth() - 3)).toString()
+      ).format("YYYY-MM-DD"),
       value: percentCalculationResult({
         totalValue: dayChartData.price,
         percentValue: dayChartData.percent_change_90d,
       }),
     },
     {
-      date: dtil(new Date(now.setMonth(now.getMonth() - 2)).toString()).format(
-        "YYYY-MM-DD"
-      ),
+      date: dtil(
+        new Date(change_60d.setMonth(change_60d.getMonth() - 2)).toString()
+      ).format("YYYY-MM-DD"),
       value: percentCalculationResult({
         totalValue: dayChartData.price,
         percentValue: dayChartData.percent_change_60d,
       }),
     },
     {
-      date: dtil(new Date(now.setMonth(now.getMonth() - 1)).toString()).format(
-        "YYYY-MM-DD"
-      ),
+      date: dtil(
+        new Date(change_30d.setMonth(change_30d.getMonth() - 1)).toString()
+      ).format("YYYY-MM-DD"),
       value: percentCalculationResult({
         totalValue: dayChartData.price,
         percentValue: dayChartData.percent_change_30d,
       }),
     },
     {
-      date: dtil(new Date(now.setDate(now.getDate() - 7)).toString()).format(
-        "YYYY-MM-DD"
-      ),
+      date: dtil(
+        new Date(change_7d.setDate(change_7d.getDate() - 7)).toString()
+      ).format("YYYY-MM-DD"),
       value: percentCalculationResult({
         totalValue: dayChartData.price,
         percentValue: dayChartData.percent_change_7d,
       }),
     },
     {
-      date: dtil(new Date(now.setDate(now.getDate() - 1)).toString()).format(
-        "YYYY-MM-DD"
-      ),
+      date: dtil(
+        new Date(change_24h.setDate(change_24h.getDate() - 1)).toString()
+      ).format("YYYY-MM-DD"),
       value: percentCalculationResult({
         totalValue: dayChartData.price,
         percentValue: dayChartData.percent_change_24h,
@@ -77,10 +82,9 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
       }),
     },
   ];
-  console.log(dayChartData_TEMP);
 
   const PERCENT_CRYPTO_TITLE =
-    risingPercent < 0 ? (
+    Number(risingPercent) < 0 ? (
       <Risingfalling isRising={false}>
         <VscTriangleDown />
         {risingPercent}%
@@ -93,7 +97,7 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
     );
 
   const PERCENT_CRYPTO_BLOCK_AMOUNT =
-    risingPercent < 0 ? (
+    Number(risingPercent) < 0 ? (
       <CryptoStateBlockRising isRising={false}>
         <VscTriangleDown />
         {risingPercent}%
@@ -110,7 +114,6 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
     width: 800,
     height: 400,
     autoFit: false,
-    padding: "auto",
     xField: "date",
     yField: "value",
     point: {
@@ -170,11 +173,6 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
               </CryptoStateBlockAmount>
               {PERCENT_CRYPTO_BLOCK_AMOUNT}
             </CryptoStateBlockWrapper>
-            {/* <CryptoStateBlockWrapper>
-							<CryproStateBlock>최대 공급량</CryproStateBlock>
-							<CryptoStateBlockAmount>21,000,000</CryptoStateBlockAmount>
-							{PERCENT_CRYPTO_BLOCK_AMOUNT}
-						</CryptoStateBlockWrapper> */}
           </CryptoStateItemWrapper>
         </CryptoPriceWrapper>
       </CryptoTopWrapper>
@@ -249,7 +247,6 @@ const CryptoRankTag = styled(CryptoInitialTag)`
 
 const CryptoPriceWrapper = styled.div`
   width: 55%;
-  /* background-color: red; */
 `;
 
 const CryptoHeaderName = styled.div`
@@ -271,8 +268,6 @@ const CryptoPrice = styled.div`
 
 const Risingfalling = styled.div<RisingProps>`
   background-color: ${(props) => (props.isRising ? "#16c784" : "#ea3943")};
-  /* # */
-  /* width: 76px; */
   color: rgb(255, 255, 255);
   padding: 4px 10px;
   border-radius: 8px;
@@ -288,9 +283,6 @@ const Risingfalling = styled.div<RisingProps>`
 const CryptoStateItemWrapper = styled.div`
   width: 100%;
   display: flex;
-  /* & {
-		border-left: 1px solid #eff2f5;
-	} */
 `;
 
 const CryptoStateBlockWrapper = styled.div`
