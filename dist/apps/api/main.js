@@ -300,10 +300,10 @@ router.use("/coin", _cryptoMap__WEBPACK_IMPORTED_MODULE_1__["default"], _cryptoI
 /*!*****************************************!*\
   !*** ./apps/api/src/config/config.json ***!
   \*****************************************/
-/*! exports provided: SERVER, COINMACAP, XCMCPROAPIKEY, default */
+/*! exports provided: COINMACAP, XCMCPROAPIKEY, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"SERVER\":\"http://localhost:3333/api/v1\",\"COINMACAP\":\"https://pro-api.coinmarketcap.com/v1\",\"XCMCPROAPIKEY\":\"097f89bf-8beb-4bd2-a190-b401133ad2e4\"}");
+module.exports = JSON.parse("{\"COINMACAP\":\"https://pro-api.coinmarketcap.com/v1\",\"XCMCPROAPIKEY\":\"097f89bf-8beb-4bd2-a190-b401133ad2e4\"}");
 
 /***/ }),
 
@@ -333,7 +333,7 @@ const getConnection = () => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter
         host: "localhost",
         port: 3306,
         username: "root",
-        password: "1234",
+        password: "",
         database: "Coin",
         synchronize: false,
         logging: false,
@@ -489,13 +489,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const app = express__WEBPACK_IMPORTED_MODULE_0__();
-const greeting = { message: "Welcome to api!" };
-_database__WEBPACK_IMPORTED_MODULE_2__["getConnection"]();
 app.use(cors__WEBPACK_IMPORTED_MODULE_1__());
-app.get("/api", (req, res) => {
-    res.send(greeting);
-});
 app.use("/api", _api__WEBPACK_IMPORTED_MODULE_3__["default"]);
+_database__WEBPACK_IMPORTED_MODULE_2__["getConnection"]();
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
     console.log("Listening at http://localhost:" + port + "/api");
