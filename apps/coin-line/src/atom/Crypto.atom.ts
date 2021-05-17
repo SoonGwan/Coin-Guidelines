@@ -1,5 +1,6 @@
-import { atom } from "recoil";
+import { atom, selectorFamily } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import { requestCoin } from "../slices/coin";
 
 const { persistAtom } = recoilPersist();
 
@@ -12,6 +13,15 @@ export const selectCrypto = atom({
 export const coinIdList = atom({
   key: "ID",
   default: [] as any,
+});
+
+export const coinDataListSelector = selectorFamily({
+  key: "coinDataListSelector",
+  get: () => async () => {
+    const data = await requestCoin();
+
+    return data;
+  },
 });
 
 export const coinPrice = atom({

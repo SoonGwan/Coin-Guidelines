@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState, ChangeEvent } from "react";
 import Main from "../../components/Main";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { coinIdList, selectCrypto } from "../../atom/Crypto.atom";
+import {
+  coinDataListSelector,
+  coinIdList,
+  selectCrypto,
+} from "../../atom/Crypto.atom";
 import { useHistory } from "react-router-dom";
 import { requestCoin, requestCoinIdList } from "../../slices/coin";
 
@@ -17,24 +21,14 @@ const MainContainer = () => {
   const [, setSelectCrypto] = useRecoilState(selectCrypto);
   const [coinData, setCoinData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [coinIdList, setCoinIdList] = useState([]);
   const [, setCoinIdList] = useRecoilState(coinIdList);
-
   const history = useHistory();
   const coinListId = useRecoilValue(selectCrypto);
-
+  const coinListDataResponse = useRecoilValue(coinDataListSelector({}));
   const coinTemp = [] as Options[];
-  const handleRequestCoin = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await requestCoin();
-      setCoinData(data.coinData);
-      setIsLoading(false);
-    } catch (err) {
-      setIsLoading(false);
 
-      return err;
-    }
+  const handleRequestCoin = useCallback(async () => {
+    setCoinData(coinListDataResponse.coinData);
   }, []);
 
   coinData.map((data) => {
