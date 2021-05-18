@@ -3,24 +3,19 @@ import CoinInfo from "../../components/CoinInfo";
 import { useParams } from "react-router-dom";
 import { requestCoinInfo } from "../../slices/coinInfo";
 import { quoteUSDType, coinData } from "@coin-line/api-interfaces";
+import { useRecoilValue } from "recoil";
+import { coinInfoDataSelector } from "../../atom/Crypto.atom";
 const CoinInfoContainer = () => {
   const { id } = useParams();
 
   const [infoData, setInfoData] = useState<coinData>({});
   const [dayChartData, setDayChartData] = useState<quoteUSDType>({});
+  const coinInfoResponse = useRecoilValue(coinInfoDataSelector(id));
 
   const handleRequestCoinInfo = useCallback(async () => {
-    try {
-      const { data } = await requestCoinInfo(id);
-      console.log("data", data);
-      setInfoData(data && data[id]);
-      console.log(data && data[id]);
-      setDayChartData(data && data[id].quote.USD);
-    } catch (err) {
-      return err;
-    }
+    setInfoData(coinInfoResponse.data[id]);
+    setDayChartData(coinInfoResponse.data[id].quote.USD);
   }, [id]);
-  console.log(dayChartData);
 
   useEffect(() => {
     handleRequestCoinInfo();

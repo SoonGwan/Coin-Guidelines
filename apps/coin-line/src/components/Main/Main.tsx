@@ -102,12 +102,13 @@ const Main = ({
       <MoreSelectCard onPress={handlePressModal} />
       <Modal isOpen={isPress} handleDialog={handlePressModal}>
         <KeySelect options={coinTemp} crypto={crypto} setCrypto={setCrypto} />
-        <input
+        <PriceInput
           type="text"
           value={buyCryptoValue}
           onChange={(e) => onChangeRequest(e)}
+          placeholder="진입점을 적어주세요."
         />
-        <button onClick={handleSelectCrypto}>선택하기</button>
+        <ApplyButton onClick={handleSelectCrypto}>선택하기</ApplyButton>
       </Modal>
     </MainWrapper>
   );
@@ -138,4 +139,25 @@ const CryptoName = styled.div`
 const CryptoItem = styled.div`
   width: 100%;
   max-width: 92px;
+`;
+
+const PriceInput = styled.input`
+  padding: 10px 5px;
+  border: none;
+  box-shadow: 0 0 40px rgb(0 0 0 / 10%);
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const ApplyButton = styled.button`
+  box-shadow: 0 0 40px rgb(0 0 0 / 10%);
+  padding: 10px 5px;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  background-color: white;
+  font-size: 14px;
 `;
