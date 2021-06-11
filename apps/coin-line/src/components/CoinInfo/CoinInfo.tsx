@@ -3,7 +3,7 @@ import dtil from "dtil";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
 import styled from "styled-components";
 import { addDollar } from "@coin-line/utils";
-import { Line } from "@ant-design/charts";
+import { Line, Pie } from "@ant-design/charts";
 import { percentCalculationResult } from "@coin-line/utils";
 import { quoteUSDType, coinData } from "@coin-line/api-interfaces";
 
@@ -17,7 +17,6 @@ type Props = {
 };
 
 const CoinInfo = ({ info, dayChartData }: Props) => {
-  console.log(info);
   const { name, symbol, cmc_rank } = info;
   const USD_OBJ = info.quote !== undefined && info.quote.USD;
   const change_90d = new Date();
@@ -83,6 +82,19 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
     },
   ];
 
+  const supplyData_TEMP = [
+    {
+      name: "최대 공급량",
+      value: Math.floor(info.max_supply) || 0,
+    },
+    {
+      name: "현재 공급량",
+      value: Math.floor(info.total_supply) || 0,
+    },
+  ];
+
+  console.log(supplyData_TEMP);
+
   const PERCENT_CRYPTO_TITLE =
     Number(risingPercent) < 0 ? (
       <Risingfalling isRising={false}>
@@ -109,6 +121,29 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
       </CryptoStateBlockRising>
     );
 
+  const circleChartConfig = {
+    data: supplyData_TEMP,
+    width: 400,
+    height: 400,
+    autoFit: false,
+    angleField: "value",
+    colorField: "name",
+    radius: 0.9,
+    label: {
+      type: "inner",
+      // offset: "-30%",
+      // content: function content(_ref: any) {
+      //   const percent = _ref.percent;
+      //   return "".concat(percent, "%");
+      // },
+      style: {
+        fontSize: 14,
+        textAlign: "center",
+      },
+    },
+    interactions: [{ type: "element-active" }],
+  };
+
   const config = {
     data: dayChartData_TEMP,
     width: 800,
@@ -126,7 +161,6 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
       },
     },
   };
-
   return (
     <CoinInfoWrapper>
       <CryptoTopWrapper>
@@ -176,12 +210,20 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
           </CryptoStateItemWrapper>
         </CryptoPriceWrapper>
       </CryptoTopWrapper>
-      <Line {...config} />
+      <ChartWrapper>
+        <Line {...config} />
+        {info.max_supply !== undefined ||
+          (info.max_supply !== null && <Pie {...circleChartConfig} />)}
+      </ChartWrapper>
     </CoinInfoWrapper>
   );
 };
 
 export default memo(CoinInfo);
+
+const ChartWrapper = styled.div`
+  display: flex;
+`;
 
 const CoinInfoWrapper = styled.div`
   margin-top: 30px;

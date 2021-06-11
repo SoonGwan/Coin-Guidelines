@@ -11,7 +11,7 @@ import React, {
   ChangeEvent,
   useEffect,
 } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { coinIdList, selectCrypto } from "../../atom/Crypto.atom";
 import GrettingTitle from "../GrettingTitle";
@@ -43,10 +43,16 @@ const Main = ({
   handleCryptoInfo,
   handleRequestCoinIdList,
 }: Props) => {
-  const cryptoValue = useRecoilValue(selectCrypto);
+  const [cryptoValue, setCryptoValue] = useRecoilState(selectCrypto);
   const coinIdListRecoilValue = useRecoilValue(coinIdList);
   const coinIdListValue = coinIdListRecoilValue;
-  // cryptoValue.length === coinIdListRecoilValue.length &&
+  console.log(cryptoValue);
+  const handleDeleteCoinList = (id, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setCryptoValue(cryptoValue.filter((args) => args.id !== id));
+  };
 
   return (
     <MainWrapper>
@@ -59,8 +65,8 @@ const Main = ({
         <CryptoName>코인 이름</CryptoName>
         <CryptoItem>현재 금액</CryptoItem>
         <CryptoItem>익절 금액</CryptoItem>
-        <CryptoItem>구매 금액</CryptoItem>
         <CryptoItem>손절 금액</CryptoItem>
+        <CryptoItem>제거</CryptoItem>
       </CryptoTableHeader>
       {cryptoValue &&
         cryptoValue.map((data, index) => {
@@ -75,6 +81,7 @@ const Main = ({
             symbol,
             buyCryptoValue,
           } = data;
+          console.log(data);
 
           const cryptoPrice =
             coinIdListValue[index] !== undefined &&
@@ -83,10 +90,10 @@ const Main = ({
               .price !== false &&
             coinIdListValue.find((args: { id: number }) => args.id === data.id)
               .price;
-          console.log("cryptoPrice", cryptoPrice);
-          console.log("PriceListValue", coinIdListValue);
+
           return (
             <CoinCard
+              handleDeleteCoinList={handleDeleteCoinList}
               key={index}
               name={name}
               symbol={symbol}

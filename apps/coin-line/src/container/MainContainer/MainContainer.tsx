@@ -47,7 +47,7 @@ const MainContainer = () => {
         ...coinData.find((args) => args.id === crypto),
         buyCryptoValue,
       };
-      console.log(temp);
+
       setSelectCrypto((prev) => [...prev, temp]);
 
       handlePressModal();
@@ -56,7 +56,6 @@ const MainContainer = () => {
   }, [buyCryptoValue, coinData, crypto, handlePressModal, setSelectCrypto]);
 
   const onChangeRequest = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setBuyCryptoValue(e.target.value);
   }, []);
 
@@ -94,7 +93,6 @@ const MainContainer = () => {
   }, [coinListId, setCoinIdList]);
 
   useEffect(() => {
-    console.log("isLoaded");
     handleRequestCoin();
     handleRequestCoinIdList();
   }, [handleRequestCoin, handleRequestCoinIdList]);
