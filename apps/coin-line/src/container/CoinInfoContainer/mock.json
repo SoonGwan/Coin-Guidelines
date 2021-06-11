@@ -1,0 +1,39 @@
+{
+	"data": {
+		"circulating_supply": 66752414.51538747,
+		"cmc_rank": 10,
+		"date_added": "2013-04-28T00:00:00.000Z",
+		"id": 2,
+		"is_active": 1,
+		"is_fiat": 0,
+		"last_updated": "2021-04-26T00:10:02.000Z",
+		"max_supply": 84000000,
+		"name": "Litecoin",
+		"num_market_pairs": 741,
+		"platform": null,
+		"quote": {
+			"USD": {
+				"last_updated": "2021-04-26T00:10:02.000Z",
+				"market_cap": 15196330585.860369,
+				"percent_change_1h": 4.76759293,
+				"percent_change_7d": -17.46349194,
+				"percent_change_24h": -0.26211859,
+				"percent_change_30d": 24.6354706,
+				"percent_change_60d": 26.92032327,
+				"percent_change_90d": 65.47032525,
+				"price": 227.65214855797282,
+				"volume_24h": 3732620351.592038
+			}
+		},
+		"slug": "litecoin",
+		"symbol": "LTC",
+		"tags": [
+			"mineable",
+			"pow",
+			"scrypt",
+			"medium-of-exchange",
+			"binance-chain"
+		],
+		"total_supply": 66752414.51538747
+	}
+}
