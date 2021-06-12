@@ -61,11 +61,13 @@ const Main = ({
         title="Todays Cryptocurrency Prices by Market Cap"
       />
       <CryptoTableHeader>
-        <CryptoId>#</CryptoId>
-        <CryptoName>코인 이름</CryptoName>
-        <CryptoItem>현재 금액</CryptoItem>
-        <CryptoItem>익절 금액</CryptoItem>
-        <CryptoItem>손절 금액</CryptoItem>
+        <CryptoWrapper>
+          <CryptoId>#</CryptoId>
+          <CryptoName>코인 이름</CryptoName>
+          <CryptoItem>현재 금액</CryptoItem>
+          <CryptoItem>익절 금액</CryptoItem>
+          <CryptoItem>손절 금액</CryptoItem>
+        </CryptoWrapper>
         <CryptoItem>제거</CryptoItem>
       </CryptoTableHeader>
       {cryptoValue &&
@@ -108,14 +110,16 @@ const Main = ({
 
       <MoreSelectCard onPress={handlePressModal} />
       <Modal isOpen={isPress} handleDialog={handlePressModal}>
-        <KeySelect options={coinTemp} crypto={crypto} setCrypto={setCrypto} />
-        <PriceInput
+        <ModalItemWrapper>
+          <KeySelect options={coinTemp} crypto={crypto} setCrypto={setCrypto} />
+          {/* <PriceInput
           type="text"
           value={buyCryptoValue}
           onChange={(e) => onChangeRequest(e)}
           placeholder="진입점을 적어주세요."
-        />
-        <ApplyButton onClick={handleSelectCrypto}>선택하기</ApplyButton>
+        /> */}
+          <ApplyButton onClick={handleSelectCrypto}>선택하기</ApplyButton>
+        </ModalItemWrapper>
       </Modal>
     </MainWrapper>
   );
@@ -123,7 +127,17 @@ const Main = ({
 
 export default Main;
 
+const CryptoWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
 const MainWrapper = styled.div``;
+
+const ModalItemWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
 
 const CryptoTableHeader = styled.div`
   width: 100%;
