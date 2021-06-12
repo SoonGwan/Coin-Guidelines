@@ -51,6 +51,8 @@ const MainContainer = () => {
       setSelectCrypto((prev) => [...prev, temp]);
 
       handlePressModal();
+
+      window.location.reload();
     }
     // TODO: 여기에 들어갈 토스트 알림이 있어야 함
   }, [buyCryptoValue, coinData, crypto, handlePressModal, setSelectCrypto]);
