@@ -85,7 +85,7 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
   const supplyData_TEMP = [
     {
       name: "최대 공급량",
-      value: Math.floor(info.max_supply) || 0,
+      value: Math.floor(info.max_supply) || null,
     },
     {
       name: "현재 공급량",
@@ -93,7 +93,11 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
     },
   ];
 
-  console.log(supplyData_TEMP);
+  console.log(
+    "info.max_supplyinfo.max_supplyinfo.max_supplyinfo.max_supply",
+    info.max_supply !== null,
+    info.max_supply
+  );
 
   const PERCENT_CRYPTO_TITLE =
     Number(risingPercent) < 0 ? (
@@ -141,7 +145,7 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
         textAlign: "center",
       },
     },
-    interactions: [{ type: "element-active" }],
+    // interactions: [{ type: "element-active" }],
   };
 
   const config = {
@@ -205,15 +209,16 @@ const CoinInfo = ({ info, dayChartData }: Props) => {
               <CryptoStateBlockAmount>
                 {addDollar(USD_OBJ.volume_24h)}
               </CryptoStateBlockAmount>
-              {PERCENT_CRYPTO_BLOCK_AMOUNT}
+              {USD_OBJ.volume_24h === 0 ? null : PERCENT_CRYPTO_BLOCK_AMOUNT}
             </CryptoStateBlockWrapper>
           </CryptoStateItemWrapper>
         </CryptoPriceWrapper>
       </CryptoTopWrapper>
       <ChartWrapper>
         <Line {...config} />
-        {info.max_supply !== undefined ||
-          (info.max_supply !== null && <Pie {...circleChartConfig} />)}
+        {info.max_supply !== undefined && info.max_supply !== null && (
+          <Pie {...circleChartConfig} />
+        )}
       </ChartWrapper>
     </CoinInfoWrapper>
   );
