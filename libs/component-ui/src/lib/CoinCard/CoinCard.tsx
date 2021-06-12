@@ -5,6 +5,7 @@ import { maxWidthDefine } from "@coin-line/utils";
 import { addDollar, shortHitProfit, shortHitLoss } from "@coin-line/utils";
 import { Link } from "react-router-dom";
 import { darken, lighten } from "polished";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface IStyledProps {
   isRising: boolean;
@@ -34,30 +35,49 @@ const CoinCard = ({
   return (
     // <Link to={`/coinInfo/${id}`}>
     <CoinCardWrapper onClick={() => handleCryptoInfo(id)}>
-      <Rank>{index}</Rank>
-      <CoinName>
-        {name}
-        <CoinAlias>{symbol}</CoinAlias>
-      </CoinName>
-      <Price>{addDollar(cryptoPrice)}</Price>
-      {/* 현재 금액 */}
-      <Price>{shortHitProfit(cryptoPrice.toString(), 15)}</Price>
-      {/* 우리가 산 금액 애 15퍼 이익 */}
-      {/* <Price>{addDollar(buyCryptoValue)}</Price> */}
-      {/* 우리가 산 금액 */}
-      <Price>{shortHitLoss(cryptoPrice.toString(), 5)}</Price>
-      {/* 우리가 팔 금액 */}
-      {/* <AmountDifference isRising={true}>
+      <CoinCardInnerItem>
+        <Rank>{index}</Rank>
+        <CoinName>
+          {name}
+          <CoinAlias>{symbol}</CoinAlias>
+        </CoinName>
+        <Price>{addDollar(cryptoPrice)}</Price>
+        {/* 현재 금액 */}
+        <Price>{shortHitProfit(cryptoPrice.toString(), 15)}</Price>
+        {/* 우리가 산 금액 애 15퍼 이익 */}
+        {/* <Price>{addDollar(buyCryptoValue)}</Price> */}
+        {/* 우리가 산 금액 */}
+        <Price>{shortHitLoss(cryptoPrice.toString(), 5)}</Price>
+        {/* 우리가 팔 금액 */}
+        {/* <AmountDifference isRising={true}>
 				{difference === "up" ? <VscTriangleUp /> : <VscTriangleDown />}
 				1.23%
 			</AmountDifference> */}
-      <div onClick={(e) => handleDeleteCoinList(id, e)}>삭제</div>
+      </CoinCardInnerItem>
+      <DeleteItemButton onClick={(e) => handleDeleteCoinList(id, e)}>
+        <FaTrashAlt />
+      </DeleteItemButton>
     </CoinCardWrapper>
     // </Link>
   );
 };
 
 export default CoinCard;
+
+const CoinCardInnerItem = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const DeleteItemButton = styled.div`
+  width: 92px;
+  /* margin-right: 20px; */
+  transition: all 0.25s ease;
+
+  &:hover {
+    color: #e2252b;
+  }
+`;
 
 export const CoinCardWrapper = styled.div`
   ${maxWidthDefine(1370)}
